@@ -48,9 +48,9 @@ class _KmToMilesState extends State<KmToMiles> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 30),
             ResultField(output),
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             InputField(inputValues),
             KeypadKmtoMiles(ClickFN)
           ],
