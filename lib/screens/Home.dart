@@ -10,13 +10,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List inputValues = [];
-  String output = "";
+  String output = "0";
 
   void ClickFN(String message) {
     if (message == "C") {
-      inputValues.clear();
+      output = "0";
       setState(() {
-        inputValues.add("");
+        inputValues.clear();
+      });
+    } else if (message == "=") {
+      output = inputValues.join("");
+      setState(() {
+        inputValues.clear();
       });
     } else {
       setState(() {
