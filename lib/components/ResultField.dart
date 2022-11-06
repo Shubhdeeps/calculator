@@ -6,8 +6,10 @@ class ResultField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        alignment: Alignment.bottomRight,
         child: Text(output,
             style: const TextStyle(
-                color: Color.fromRGBO(252, 255, 243, 1), fontSize: 38)),
+                color: Color.fromRGBO(252, 255, 243, 1), fontSize: 24)),
       );
 }
