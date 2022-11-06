@@ -1,8 +1,9 @@
 import 'dart:developer';
-import 'package:function_tree/function_tree.dart';
 
+import 'package:function_tree/function_tree.dart';
 import 'package:flutter/material.dart';
 import '../components/components.dart';
+import '../services/history.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,6 +25,9 @@ class _HomeState extends State<Home> {
       var equation = inputValues.join("");
       var result = equation.interpret();
       output = "$equation = $result";
+      var now = DateTime.now();
+      var formatedNow = now.toString().substring(0, 16);
+      setPersistData("$output on $formatedNow");
       setState(() {
         inputValues.clear();
       });

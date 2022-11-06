@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../components/components.dart';
+import '../services/history.dart';
 
 class KmToMiles extends StatefulWidget {
   const KmToMiles({super.key});
@@ -30,10 +31,11 @@ class _KmToMilesState extends State<KmToMiles> {
           return;
         }
         inputValues.add(message);
-        log(inputValues.join(""));
         _output = double.parse(inputValues.join("")) * 0.621371;
         var out = _output.toStringAsFixed(2);
         output = "$out Miles";
+        var input = inputValues.join("");
+        setPersistData("$input km = $output");
       });
     }
   }
