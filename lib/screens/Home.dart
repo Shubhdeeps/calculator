@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'package:function_tree/function_tree.dart';
+
 import 'package:flutter/material.dart';
 import '../components/components.dart';
 
@@ -14,12 +17,13 @@ class _HomeState extends State<Home> {
 
   void ClickFN(String message) {
     if (message == "C") {
-      output = "0";
       setState(() {
         inputValues.clear();
       });
     } else if (message == "=") {
-      output = inputValues.join("");
+      var equation = inputValues.join("");
+      var result = equation.interpret();
+      output = "$equation = $result";
       setState(() {
         inputValues.clear();
       });
@@ -48,9 +52,8 @@ class _HomeState extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
             ResultField(output),
-            const SizedBox(height: 20),
             InputField(inputValues),
             Keypad(ClickFN)
           ],
