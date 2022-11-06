@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'package:function_tree/function_tree.dart';
+
 import 'package:flutter/material.dart';
 import '../components/components.dart';
 
@@ -19,7 +22,9 @@ class _HomeState extends State<Home> {
         inputValues.clear();
       });
     } else if (message == "=") {
-      output = inputValues.join("");
+      var equation = inputValues.join("");
+      var result = equation.interpret().toString();
+      output = "$equation = $result";
       setState(() {
         inputValues.clear();
       });
