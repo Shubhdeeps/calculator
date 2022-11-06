@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../components/components.dart';
 
@@ -11,19 +13,25 @@ class KmToMiles extends StatefulWidget {
 class _KmToMilesState extends State<KmToMiles> {
   List inputValues = [];
   double _output = 0;
-  String output = "0";
+  String output = "0 Miles";
 
   void ClickFN(String message) {
     if (message == "C") {
-      inputValues.clear();
-      output = "0";
+      output = "0 Miles";
       setState(() {
-        inputValues.add("");
+        inputValues.clear();
       });
     } else {
       setState(() {
+        if (inputValues.isEmpty && message == ".") {
+          inputValues.add(0);
+        }
+        if (inputValues.contains(".") && message == ".") {
+          return;
+        }
         inputValues.add(message);
-        _output = double.parse(inputValues.join()) * 0.621371;
+        log(inputValues.join(""));
+        _output = double.parse(inputValues.join("")) * 0.621371;
         var out = _output.toStringAsFixed(2);
         output = "$out Miles";
       });
@@ -51,7 +59,9 @@ class _KmToMilesState extends State<KmToMiles> {
             const SizedBox(height: 30),
             ResultField(output),
             const SizedBox(height: 20),
-            InputField(inputValues),
+            InputField(
+              inputValues.isNotEmpty ? [...inputValues, " km"] : [0, " km"],
+            ),
             KeypadKmtoMiles(ClickFN)
           ],
         ),

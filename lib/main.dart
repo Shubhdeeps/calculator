@@ -48,7 +48,7 @@ class Pages extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       onPageChanged: (value) => pageValue(value),
-      children: const <Widget>[Home(), KmToMiles()],
+      children: const <Widget>[Home(), KmToMiles(), History()],
     );
   }
 }

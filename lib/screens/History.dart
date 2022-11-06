@@ -20,8 +20,13 @@ class History extends StatelessWidget {
               tileMode: TileMode.clamp),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              child: Text("Hello history"),
+            )
+          ],
         ),
       ),
     );
