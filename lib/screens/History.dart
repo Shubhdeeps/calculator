@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/components.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../services/history.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -13,9 +12,9 @@ class _HistoryState extends State<History> {
   List<String> history_items = [];
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    getPersistData();
+    getData();
   }
 
   @override
@@ -45,7 +44,7 @@ class _HistoryState extends State<History> {
                       color: Color.fromRGBO(252, 255, 243, 1), fontSize: 28),
                 ),
                 TextButton(
-                  onPressed: () => clearPersistData(),
+                  onPressed: () => clearData(),
                   child: const Text(
                     "Clear History",
                     style: TextStyle(fontSize: 20),
@@ -61,11 +60,11 @@ class _HistoryState extends State<History> {
                 ),
                 alignment: Alignment.center,
                 margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                padding: const EdgeInsets.fromLTRB(25, 10, 20, 10),
                 child: Text(
                   history,
                   style: const TextStyle(
-                      color: Color.fromRGBO(252, 255, 243, 1), fontSize: 24),
+                      color: Color.fromRGBO(252, 255, 243, 1), fontSize: 16),
                 ),
               ),
             ),
@@ -75,17 +74,15 @@ class _HistoryState extends State<History> {
     );
   }
 
-  void getPersistData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List<String>? items = prefs.getStringList('calculations');
+  void getData() async {
+    var items = await getPersistData();
     setState(() {
-      history_items = items ?? [];
+      history_items = items as List<String>;
     });
   }
 
-  void clearPersistData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('calculations');
+  void clearData() async {
+    clearPersistData();
     setState(() {
       history_items = [];
     });

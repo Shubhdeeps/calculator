@@ -25,9 +25,7 @@ class _HomeState extends State<Home> {
       var equation = inputValues.join("");
       var result = equation.interpret();
       output = "$equation = $result";
-      var now = DateTime.now();
-      var formatedNow = now.toString().substring(0, 16);
-      setPersistData("$output on $formatedNow");
+      setPersistData("$output");
       setState(() {
         inputValues.clear();
       });
