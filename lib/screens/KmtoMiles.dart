@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../components/components.dart';
 import '../services/history.dart';
@@ -16,7 +14,20 @@ class _KmToMilesState extends State<KmToMiles> {
   double _output = 0;
   String output = "0 Miles";
 
-  void ClickFN(String message) {
+  void convert() {
+    print("convert btn");
+    //performing function to calcalte the miles
+    _output = double.parse(inputValues.join("")) * 0.621371;
+    var out = _output.toStringAsFixed(3);
+    output = "$out Miles";
+    var input = inputValues.join("");
+    setPersistData("$input km = $output");
+    setState(() {
+      inputValues = [];
+    });
+  }
+
+  void clickFN(String message) {
     if (message == "C") {
       output = "0 Miles";
       setState(() {
@@ -30,12 +41,8 @@ class _KmToMilesState extends State<KmToMiles> {
         if (inputValues.contains(".") && message == ".") {
           return;
         }
+        // adding new value to our input array.
         inputValues.add(message);
-        _output = double.parse(inputValues.join("")) * 0.621371;
-        var out = _output.toStringAsFixed(2);
-        output = "$out Miles";
-        var input = inputValues.join("");
-        setPersistData("$input km = $output");
       });
     }
   }
@@ -64,7 +71,13 @@ class _KmToMilesState extends State<KmToMiles> {
             InputField(
               inputValues.isNotEmpty ? [...inputValues, " km"] : [0, " km"],
             ),
-            KeypadKmtoMiles(ClickFN)
+            TextButton(
+              onPressed: () => convert(),
+              child: const Text("Convert",
+                  style: TextStyle(
+                      color: Color.fromRGBO(252, 255, 243, 1), fontSize: 38)),
+            ),
+            KeypadKmtoMiles(clickFN)
           ],
         ),
       ),
