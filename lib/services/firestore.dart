@@ -7,16 +7,22 @@ class FirestoreService {
   CollectionReference historyRef =
       FirebaseFirestore.instance.collection("history");
 
-  Future<void> addHistory(String data) {
-    return historyRef
-        .add({"input": data, "created": Timestamp.now()})
-        .then((value) => print("history added"))
-        .catchError((onError) => print(onError));
+  Future<void> addHistory(String data, String userId) {
+    return historyRef.add({
+      "input": data,
+      "created": Timestamp.now(),
+      "userId": userId
+    }).catchError((onError) => print(onError));
   }
 
-  Future<List<String>> getHistory() async {
-    var historyItems =
-        await historyRef.orderBy("created", descending: true).get();
+  Future<List<String>> getHistory(String userId) async {
+    if (userId == "") {
+      return [];
+    }
+    var historyItems = await historyRef
+        .orderBy("created", descending: true)
+        .where("userId", isEqualTo: userId)
+        .get();
     final List<String> items = [];
     for (final doc in historyItems.docs) {
       var equation = doc["input"] as String;
@@ -28,8 +34,9 @@ class FirestoreService {
     return items;
   }
 
-  Future<void> deleteHistory() async {
-    final collection = await historyRef.get();
+  Future<void> deleteHistory(String userId) async {
+    final collection =
+        await historyRef.where("userId", isEqualTo: userId).get();
     final batch = FirebaseFirestore.instance.batch();
 
     for (final doc in collection.docs) {
