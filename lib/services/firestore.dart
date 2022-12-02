@@ -1,27 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:untitled/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+// the security rules at firebase has been update, only the person with uid can read his/her docs.
 class FirestoreService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   CollectionReference historyRef =
       FirebaseFirestore.instance.collection("history");
 
-  Future<void> addHistory(String data, String userId) {
+  Future<void> addHistory(String data) {
+    // print(auth.currentUser!.uid);
     return historyRef.add({
       "input": data,
       "created": Timestamp.now(),
-      "userId": userId
+      "userId": auth.currentUser!.uid
     }).catchError((onError) => print(onError));
   }
 
-  Future<List<String>> getHistory(String userId) async {
-    if (userId == "") {
-      return [];
-    }
+  Future<List<String>> getHistory() async {
     var historyItems = await historyRef
         .orderBy("created", descending: true)
-        .where("userId", isEqualTo: userId)
+        .where("userId", isEqualTo: auth.currentUser!.uid)
         .get();
     final List<String> items = [];
     for (final doc in historyItems.docs) {
@@ -34,9 +33,10 @@ class FirestoreService {
     return items;
   }
 
-  Future<void> deleteHistory(String userId) async {
-    final collection =
-        await historyRef.where("userId", isEqualTo: userId).get();
+  Future<void> deleteHistory() async {
+    final collection = await historyRef
+        .where("userId", isEqualTo: auth.currentUser!.uid)
+        .get();
     final batch = FirebaseFirestore.instance.batch();
 
     for (final doc in collection.docs) {
